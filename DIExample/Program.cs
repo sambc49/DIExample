@@ -11,13 +11,7 @@ namespace DIExample
     {
         static void Main(string[] args)
         {
-            ContainerBuilder builder = new ContainerBuilder();
-
-            builder.RegisterType<AvengerRepository>().As<IAvengerRepository>();
-            builder.RegisterType<Logger>().As<ILogger>();
-            builder.RegisterType<SuperheroService>();
-
-            IContainer container = builder.Build();
+            IContainer container = ConfigureServices();
 
             var superheroService = container.Resolve<SuperheroService>();
 
@@ -60,6 +54,17 @@ namespace DIExample
                         break;
                 }
             }
+        }
+
+        private static IContainer ConfigureServices()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            builder.RegisterType<AvengerRepository>().As<IAvengerRepository>();
+            builder.RegisterType<Logger>().As<ILogger>();
+            builder.RegisterType<SuperheroService>();
+
+            return builder.Build();
         }
     }
 }
