@@ -5,7 +5,12 @@ using DIExample.Models;
 
 namespace DIExample.Repositories
 {
-    public class AvengerRepository
+    public interface IAvengerRepository
+    {
+        IEnumerable<Hero> FetchAll();
+        Hero Fetch(string name);
+    }
+    public class AvengerRepository : IAvengerRepository
     {
         public IEnumerable<Hero> FetchAll()
         {

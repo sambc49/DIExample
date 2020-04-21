@@ -1,7 +1,12 @@
 ﻿using System;
 namespace DIExample.Services
 {
-    public class Logger
+    public interface ILogger
+    {
+        void Log(string message, params string[] args);
+    }
+
+    public class Logger : ILogger
     {
         public void Log(string message, params string[] args)
         {
