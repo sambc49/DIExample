@@ -11,6 +11,16 @@ namespace DIExample
     {
         static void Main(string[] args)
         {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            builder.RegisterType<AvengerRepository>().As<IAvengerRepository>();
+            builder.RegisterType<Logger>().As<ILogger>();
+            builder.RegisterType<SuperheroService>();
+
+            IContainer container = builder.Build();
+
+            var superheroService = container.Resolve<SuperheroService>();
+
             bool exit = false;
             while (!exit)
             {
@@ -23,16 +33,6 @@ namespace DIExample
                 {
                     case "1":
                         {
-                            ContainerBuilder builder = new ContainerBuilder();
-
-                            builder.RegisterType<AvengerRepository>().As<IAvengerRepository>();
-                            builder.RegisterType<Logger>().As<ILogger>();
-                            builder.RegisterType<SuperheroService>();
-
-                            IContainer container = builder.Build();
-
-                            var superheroService = container.Resolve<SuperheroService>();
-
                             var avengers = superheroService.GetAvengers();
                             foreach (var avenger in avengers)
                             {
@@ -46,16 +46,6 @@ namespace DIExample
                             string name = Console.ReadLine();
                             if (!string.IsNullOrWhiteSpace(name))
                             {
-                                ContainerBuilder builder = new ContainerBuilder();
-
-                                builder.RegisterType<AvengerRepository>().As<IAvengerRepository>();
-                                builder.RegisterType<Logger>().As<ILogger>();
-                                builder.RegisterType<SuperheroService>();
-
-                                IContainer container = builder.Build();
-
-                                SuperheroService superheroService = container.Resolve<SuperheroService>();
-
                                 var avenger = superheroService.GetAvenger(name);
                                 if (avenger != null)
                                 {
@@ -70,21 +60,6 @@ namespace DIExample
                         break;
                 }
             }
-        }
-
-        public IServiceProvider ConfigureServices(IServiceCollection services)
-        {
-           
-            // setup the Autofac container
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
-            services.AddTransient<ILogger, Logger>();
-            services.AddTransient<IAvengerRepository, AvengerRepository>();
-            services.AddTransient<SuperheroService>();
-            var container = builder.Build();
-            
-            // return the IServiceProvider implementation
-            return new AutofacServiceProvider(container);
         }
     }
 }
