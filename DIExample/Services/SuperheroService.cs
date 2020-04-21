@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DIExample.Models;
+using DIExample.Repositories;
 
 namespace DIExample.Services
 {
@@ -8,14 +9,14 @@ namespace DIExample.Services
     {
         public IEnumerable<Hero> GetAvengers()
         {
-            //here call the avengerRepository to get all avengers
-            return null;
+            var avengersRepository = new AvengerRepository();
+            return avengersRepository.FetchAll();
         }
 
         public Hero GetAvenger(string name)
         {
-            //here call the avengerRepository to get single avenger by name
-            return null;
+            var avengersRepository = new AvengerRepository();
+            return avengersRepository.Fetch(name);
         }
     }
 }
