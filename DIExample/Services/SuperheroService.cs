@@ -7,28 +7,30 @@ namespace DIExample.Services
 {
     public class SuperheroService
     {
+        private readonly IAvengerRepository _avengerRepository;
+        private readonly ILogger _logger;
+
+        public SuperheroService(IAvengerRepository avengerRepository, ILogger logger)
+        {
+            _avengerRepository = avengerRepository;
+            _logger = logger;
+        }
         public IEnumerable<Hero> GetAvengers()
         {
-            var logger = new Logger();
-            logger.Log("Calling SuperheroService.GetAvengers.");
+            _logger.Log("Calling SuperheroService.GetAvengers.");
+            var avengers = _avengerRepository.FetchAll();
 
-            var avengersRepository = new AvengerRepository();
-            var avengers = avengersRepository.FetchAll();
-
-            logger.Log("SuperheroService.GetAvengers called.");
+            _logger.Log("SuperheroService.GetAvengers called.");
 
             return avengers;
         }
 
         public Hero GetAvenger(string name)
         {
-            var logger = new Logger();
-            logger.Log($"Calling SuperheroService.GetAvenger('{name}').");
-
-            var avengersRepository = new AvengerRepository();
+            _logger.Log($"Calling SuperheroService.GetAvenger('{name}').");
             
-            var avenger = avengersRepository.Fetch(name);
-            logger.Log($"SuperheroService.GetAvenger('{name}') called.");
+            var avenger = _avengerRepository.Fetch(name);
+            _logger.Log($"SuperheroService.GetAvenger('{name}') called.");
 
             return avenger;
         }

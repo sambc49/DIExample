@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DIExample.Models;
+using DIExample.Services;
 
 namespace DIExample.Repositories
 {
@@ -12,6 +13,11 @@ namespace DIExample.Repositories
     }
     public class AvengerRepository : IAvengerRepository
     {
+        private readonly ILogger _logger;
+        public AvengerRepository(ILogger logger)
+        {
+            _logger = logger;
+        }
         public IEnumerable<Hero> FetchAll()
         {
             //simulates db operation to go and get list of heroes from a database
@@ -25,12 +31,16 @@ namespace DIExample.Repositories
                 new Hero("Spiderman", "Peter Parker", "Tarzan-like Swinging Abilities")
             };
 
+            _logger.Log("AvengerRepository.FetchAll called - Database hit.");
+
             return heroes;
         }
 
         public Hero Fetch(string name)
         {
             var allHeroes = FetchAll();
+
+            _logger.Log("AvengerRepository.Fetch('{0}') called - Database hit.", name);
 
             return allHeroes.FirstOrDefault(x => x.SuperheroName.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
