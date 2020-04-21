@@ -9,14 +9,28 @@ namespace DIExample.Services
     {
         public IEnumerable<Hero> GetAvengers()
         {
+            var logger = new Logger();
+            logger.Log("Calling SuperheroService.GetAvengers.");
+
             var avengersRepository = new AvengerRepository();
-            return avengersRepository.FetchAll();
+            var avengers = avengersRepository.FetchAll();
+
+            logger.Log("SuperheroService.GetAvengers called.");
+
+            return avengers;
         }
 
         public Hero GetAvenger(string name)
         {
+            var logger = new Logger();
+            logger.Log($"Calling SuperheroService.GetAvenger('{name}').");
+
             var avengersRepository = new AvengerRepository();
-            return avengersRepository.Fetch(name);
+            
+            var avenger = avengersRepository.Fetch(name);
+            logger.Log($"SuperheroService.GetAvenger('{name}') called.");
+
+            return avenger;
         }
     }
 }
